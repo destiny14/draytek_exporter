@@ -73,6 +73,66 @@ var (
 		"The downstream SNR margin in dB",
 		nil, nil,
 	)
+	lineAttenuationNearEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "line_attenuation_db"),
+		"The near end line attenuation in dB",
+		nil, nil,
+	)
+	lineAttenuationFarEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "line_attenuation_db"),
+		"The far end line attenuation in dB",
+		nil, nil,
+	)
+	crcNearEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "crc_errors"),
+		"Number of CRC errors on near end",
+		nil, nil,
+	)
+	crcFarEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "crc_errors"),
+		"Number of CRC errors on far end",
+		nil, nil,
+	)
+	uasNearEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "unavailable_seconds"),
+		"Number of unavailable seconds on near end",
+		nil, nil,
+	)
+	uasFarEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "unavailable_seconds"),
+		"Number of unavailable seconds on far end",
+		nil, nil,
+	)
+	hecErrorsNearEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "hec_errors"),
+		"Number of HEC errors on near end",
+		nil, nil,
+	)
+	hecErrorsFarEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "hec_errors"),
+		"Number of HEC errors on far end",
+		nil, nil,
+	)
+	esNearEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "errored_seconds"),
+		"Number of errored seconds on near end",
+		nil, nil,
+	)
+	esFarEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "errored_seconds"),
+		"Number of errored seconds on far end",
+		nil, nil,
+	)
+	sesNearEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "severely_errored_seconds"),
+		"Number of severely errored seconds on near end",
+		nil, nil,
+	)
+	sesFarEndDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "severely_errored_seconds"),
+		"Number of severely errored seconds on far end",
+		nil, nil,
+	)
 )
 
 // Describe describes all the metrics ever exported by the draytek_exporter. It
@@ -86,6 +146,18 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	ch <- attainableRateUpDesc
 	ch <- snrMarginDownDesc
 	ch <- snrMarginUpDesc
+	ch <- lineAttenuationNearEndDesc
+	ch <- lineAttenuationFarEndDesc
+	ch <- crcNearEndDesc
+	ch <- crcFarEndDesc
+	ch <- uasNearEndDesc
+	ch <- uasFarEndDesc
+	ch <- hecErrorsNearEndDesc
+	ch <- hecErrorsFarEndDesc
+	ch <- esNearEndDesc
+	ch <- esFarEndDesc
+	ch <- sesNearEndDesc
+	ch <- sesFarEndDesc
 }
 
 // Collect fetches the stats from the draytek router and delivers them as
@@ -123,5 +195,41 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	)
 	ch <- prometheus.MustNewConstMetric(
 		snrMarginUpDesc, prometheus.GaugeValue, status.SNRMarginUpstream,
+	)
+	ch <- prometheus.MustNewConstMetric(
+		lineAttenuationNearEndDesc, prometheus.GaugeValue, status.LineAttenuationNearEnd,
+	)
+	ch <- prometheus.MustNewConstMetric(
+		lineAttenuationFarEndDesc, prometheus.GaugeValue, status.LineAttenuationFarEnd,
+	)
+	ch <- prometheus.MustNewConstMetric(
+		crcNearEndDesc, prometheus.GaugeValue, float64(status.CRCNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		crcFarEndDesc, prometheus.GaugeValue, float64(status.CRCFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		uasNearEndDesc, prometheus.GaugeValue, float64(status.UASNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		uasFarEndDesc, prometheus.GaugeValue, float64(status.UASFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		hecErrorsNearEndDesc, prometheus.GaugeValue, float64(status.HECErrorsNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		hecErrorsFarEndDesc, prometheus.GaugeValue, float64(status.HECErrorsFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		esNearEndDesc, prometheus.GaugeValue, float64(status.ESNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		esFarEndDesc, prometheus.GaugeValue, float64(status.ESFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		sesNearEndDesc, prometheus.GaugeValue, float64(status.SESNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		sesFarEndDesc, prometheus.GaugeValue, float64(status.SESFarEnd),
 	)
 }

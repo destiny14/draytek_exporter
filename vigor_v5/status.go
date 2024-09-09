@@ -42,6 +42,18 @@ type Status struct {
 	AttainableRateUpstream   int
 	SNRMarginDownstream      float64
 	SNRMarginUpstream        float64
+	LineAttenuationNearEnd   float64
+	LineAttenuationFarEnd    float64
+	CRCNearEnd               int
+	CRCFarEnd                int
+	UASNearEnd               int
+	UASFarEnd                int
+	HECErrorsNearEnd         int
+	HECErrorsFarEnd          int
+	ESNearEnd                int
+	ESFarEnd                 int
+	SESNearEnd               int
+	SESFarEnd                int
 }
 
 func (v *Vigor) FetchStatus() (Status, error) {
@@ -89,6 +101,30 @@ func (v *Vigor) parseDSLStatusGeneralJSON(respJSON string) (Status, error) {
 		case "SNR Margin":
 			status.SNRMarginDownstream = parsedB(v.Get("Downstream").String())
 			status.SNRMarginUpstream = parsedB(v.Get("Upstream").String())
+		}
+	}
+
+	endTable := value.Get("End_Table").Array()
+	for _, v := range endTable {
+		switch v.Get("Name").String() {
+		case "Attenuation":
+			status.LineAttenuationNearEnd = parsedB(v.Get("Near_End").String())
+			status.LineAttenuationFarEnd = parsedB(v.Get("Far_End").String())
+		case "CRC":
+			status.CRCNearEnd = int(v.Get("Near_End").Int())
+			status.CRCFarEnd = int(v.Get("Far_End").Int())
+		case "ES":
+			status.ESNearEnd = int(v.Get("Near_End").Int())
+			status.ESFarEnd = int(v.Get("Far_End").Int())
+		case "SES":
+			status.SESNearEnd = int(v.Get("Near_End").Int())
+			status.SESFarEnd = int(v.Get("Far_End").Int())
+		case "UAS":
+			status.UASNearEnd = int(v.Get("Near_End").Int())
+			status.UASFarEnd = int(v.Get("Far_End").Int())
+		case "HEC Errors":
+			status.HECErrorsNearEnd = int(v.Get("Near_End").Int())
+			status.HECErrorsFarEnd = int(v.Get("Far_End").Int())
 		}
 	}
 
