@@ -40,7 +40,7 @@ var (
 	draytekInfoDesc = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, "", "info"),
 		"Info about the draytek router",
-		[]string{"dsl_version", "mode", "profile"}, nil,
+		[]string{"dsl_version", "mode", "profile", "status", "annex"}, nil,
 	)
 
 	actualRateDownDesc = prometheus.NewDesc(
