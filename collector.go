@@ -14,7 +14,7 @@
 package main
 
 import (
-	"github.com/SuperQ/draytek_exporter/vigor_v5"
+	vigorv5 "github.com/SuperQ/draytek_exporter/vigor_v5"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -104,7 +104,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
 	ch <- prometheus.MustNewConstMetric(
 		draytekInfoDesc, prometheus.GaugeValue, 1.0,
-		status.DSLVersion, status.Mode, status.Profile,
+		status.DSLVersion, status.Mode, status.Profile, status.Status, status.Annex,
 	)
 	ch <- prometheus.MustNewConstMetric(
 		actualRateDownDesc, prometheus.GaugeValue, float64(status.ActualRateDownstream),
