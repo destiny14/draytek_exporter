@@ -133,6 +133,56 @@ var (
 		"Number of severely errored seconds on far end",
 		nil, nil,
 	)
+	LOSFailureNearEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "los_failure"),
+		"Number of LOS failures on near end",
+		nil, nil,
+	)
+	LOSFailureFarEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "los_failure"),
+		"Number of LOS failures on far end",
+		nil, nil,
+	)
+	LOFFailureNearEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "lof_failure"),
+		"Number of LOF failures on near end",
+		nil, nil,
+	)
+	LOFFailureFarEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "lof_failure"),
+		"Number of LOF failures on far end",
+		nil, nil,
+	)
+	LPRFailureNearEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "lpr_failure"),
+		"Number of LPR failures on near end",
+		nil, nil,
+	)
+	LPRFailureFarEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "lpr_failure"),
+		"Number of LPR failures on far end",
+		nil, nil,
+	)
+	LCDFailureNearEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "lcd_failure"),
+		"Number of LCD failures on near end",
+		nil, nil,
+	)
+	LCDFailureFarEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "lcd_failure"),
+		"Number of LCD failures on far end",
+		nil, nil,
+	)
+	RFECNearEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "near_end", "rfec"),
+		"Number of RFEC bytes on near end",
+		nil, nil,
+	)
+	RFECFarEnd = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, "far_end", "rfec"),
+		"Number of RFEC bytes on far end",
+		nil, nil,
+	)
 )
 
 // Describe describes all the metrics ever exported by the draytek_exporter. It
@@ -158,6 +208,18 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	ch <- esFarEndDesc
 	ch <- sesNearEndDesc
 	ch <- sesFarEndDesc
+	ch <- LOSFailureNearEnd
+	ch <- LOSFailureFarEnd
+	ch <- LOFFailureNearEnd
+	ch <- LOFFailureFarEnd
+	ch <- LPRFailureNearEnd
+	ch <- LPRFailureFarEnd
+	ch <- LCDFailureNearEnd
+	ch <- LCDFailureFarEnd
+	ch <- LCDFailureNearEnd
+	ch <- LCDFailureFarEnd
+	ch <- RFECNearEnd
+	ch <- RFECFarEnd
 }
 
 // Collect fetches the stats from the draytek router and delivers them as
@@ -231,5 +293,35 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	)
 	ch <- prometheus.MustNewConstMetric(
 		sesFarEndDesc, prometheus.GaugeValue, float64(status.SESFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LOSFailureNearEnd, prometheus.GaugeValue, float64(status.LOSFailureNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LOSFailureFarEnd, prometheus.GaugeValue, float64(status.LOSFailureFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LOFFailureNearEnd, prometheus.GaugeValue, float64(status.LOFFailureNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LOFFailureFarEnd, prometheus.GaugeValue, float64(status.LOFFailureFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LPRFailureNearEnd, prometheus.GaugeValue, float64(status.LPRFailureNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LPRFailureFarEnd, prometheus.GaugeValue, float64(status.LPRFailureFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LCDFailureNearEnd, prometheus.GaugeValue, float64(status.LCDFailureNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		LCDFailureFarEnd, prometheus.GaugeValue, float64(status.LCDFailureFarEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		RFECNearEnd, prometheus.GaugeValue, float64(status.RFECNearEnd),
+	)
+	ch <- prometheus.MustNewConstMetric(
+		RFECFarEnd, prometheus.GaugeValue, float64(status.RFECFarEnd),
 	)
 }

@@ -54,6 +54,16 @@ type Status struct {
 	ESFarEnd                 int
 	SESNearEnd               int
 	SESFarEnd                int
+	LOSFailureNearEnd        int
+	LOSFailureFarEnd         int
+	LOFFailureNearEnd        int
+	LOFFailureFarEnd         int
+	LPRFailureNearEnd        int
+	LPRFailureFarEnd         int
+	LCDFailureNearEnd        int
+	LCDFailureFarEnd         int
+	RFECNearEnd              int
+	RFECFarEnd               int
 }
 
 func (v *Vigor) FetchStatus() (Status, error) {
@@ -125,6 +135,21 @@ func (v *Vigor) parseDSLStatusGeneralJSON(respJSON string) (Status, error) {
 		case "HEC Errors":
 			status.HECErrorsNearEnd = int(v.Get("Near_End").Int())
 			status.HECErrorsFarEnd = int(v.Get("Far_End").Int())
+		case "LOS Failure":
+			status.LOSFailureNearEnd = int(v.Get("Near_End").Int())
+			status.LOSFailureFarEnd = int(v.Get("Far_End").Int())
+		case "LOF Failure":
+			status.LOFFailureNearEnd = int(v.Get("Near_End").Int())
+			status.LOFFailureFarEnd = int(v.Get("Far_End").Int())
+		case "LPR Failure":
+			status.LPRFailureNearEnd = int(v.Get("Near_End").Int())
+			status.LPRFailureFarEnd = int(v.Get("Far_End").Int())
+		case "LCD Failure":
+			status.LCDFailureNearEnd = int(v.Get("Near_End").Int())
+			status.LCDFailureFarEnd = int(v.Get("Far_End").Int())
+		case "RFEC":
+			status.RFECNearEnd = int(v.Get("Near_End").Int())
+			status.RFECFarEnd = int(v.Get("Far_End").Int())
 		}
 	}
 
