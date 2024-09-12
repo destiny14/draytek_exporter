@@ -124,14 +124,14 @@ func (v *Vigor) parseDSLStatusGeneralJSON(respJSON string) (Status, error) {
 			status.CRCNearEnd = int(v.Get("Near_End").Int())
 			status.CRCFarEnd = int(v.Get("Far_End").Int())
 		case "ES":
-			status.ESNearEnd = int(v.Get("Near_End").Int())
-			status.ESFarEnd = int(v.Get("Far_End").Int())
+			status.ESNearEnd = parseS(v.Get("Near_End").String())
+			status.ESFarEnd = parseS(v.Get("Far_End").String())
 		case "SES":
-			status.SESNearEnd = int(v.Get("Near_End").Int())
-			status.SESFarEnd = int(v.Get("Far_End").Int())
+			status.SESNearEnd = parseS(v.Get("Near_End").String())
+			status.SESFarEnd = parseS(v.Get("Far_End").String())
 		case "UAS":
-			status.UASNearEnd = int(v.Get("Near_End").Int())
-			status.UASFarEnd = int(v.Get("Far_End").Int())
+			status.UASNearEnd = parseS(v.Get("Near_End").String())
+			status.UASFarEnd = parseS(v.Get("Far_End").String())
 		case "HEC Errors":
 			status.HECErrorsNearEnd = int(v.Get("Near_End").Int())
 			status.HECErrorsFarEnd = int(v.Get("Far_End").Int())
@@ -178,4 +178,17 @@ func parsedB(s string) float64 {
 		return 0
 	}
 	return x
+}
+
+func parseS(s string) int {
+	parts := strings.Fields(s)
+	if len(parts) != 2 {
+		return 0
+	}
+	x, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return 0
+	}
+	return x
+
 }
